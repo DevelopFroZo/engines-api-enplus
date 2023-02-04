@@ -4,7 +4,9 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "node zbnr/build/watch"
+        "watch": "node zbnr/build/watch",
+        "build": "node zbnr/build/build",
+        "start": "node zbnr/build/start"
     },
     "repository": {
         "type": "git",
