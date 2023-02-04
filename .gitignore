@@ -1,0 +1,7 @@
+/.idea/
+/__safety__/
+/node_modules/
+/zbnr/build/
+/build/
+
+/.env

@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "commonjs",
+        "rootDir": "./src",
+        "outDir": "./build",
+        "strict": true,
+        "baseUrl": "./src/",
+        "paths": {
+            "@/*": [
+                "./*"
+            ]
+        },
+        "noEmitOnError": true,
+        "inlineSourceMap": true,
+        "esModuleInterop": true
+    },
+    "exclude": [
+        "__safety__",
+        "zbnr",
+        "node_modules"
+    ]
+}
