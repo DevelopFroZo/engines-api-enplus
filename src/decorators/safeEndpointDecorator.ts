@@ -30,7 +30,6 @@ function safeEndpointDecorator(handler: Handler) {
             res.status(500).json({
                 error: {
                     message: 'Internal Server Error',
-                    localCode: 1,
                 },
             });
         }

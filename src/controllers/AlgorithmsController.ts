@@ -26,7 +26,6 @@ class AlgorithmsController {
             return res.status(422).json({
                 error: {
                     message: `Unsupported algorithm "${rawAlgorithm}"`,
-                    localCode: 1,
                     meta: 'algorithm',
                 },
             });
@@ -71,7 +70,6 @@ class AlgorithmsController {
             return res.status(404).json({
                 error: {
                     message: `Algorithm with id "${algorithmId}" not found`,
-                    localCode: 1,
                     meta: 'id',
                 },
             });
@@ -96,7 +94,6 @@ class AlgorithmsController {
             res.status(422).json({
                 error: {
                     message: `Unsupported algorithm "${rawAlgorithm}"`,
-                    localCode: 1,
                     meta: 'algorithm',
                 },
             });

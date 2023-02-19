@@ -42,7 +42,6 @@ class EnginesController {
             return res.status(404).json({
                 error: {
                     message: `Engine with id "${engineId}" not found`,
-                    localCode: 1,
                     meta: 'id',
                 },
             });

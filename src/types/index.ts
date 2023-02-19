@@ -22,7 +22,6 @@ export enum Roles {
 export interface ResponseError<T> {
     message: string,
     meta?: T,
-    localCode?: number,
 }
 
 export type Request<ReqBody = any> = ExpressRequest<core.ParamsDictionary, any, ReqBody, core.Query>

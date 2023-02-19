@@ -30,7 +30,6 @@ class AnalyzersController {
             return res.status(409).json({
                 error: {
                     message: `Code "${code}" already used`,
-                    localCode: 1,
                     meta: 'code',
                 },
             });
@@ -67,7 +66,6 @@ class AnalyzersController {
             res.status(404).json({
                 error: {
                     message: `Analyzer with id "${analyzerId}" not found`,
-                    localCode: 1,
                     meta: 'id',
                 },
             });
@@ -100,7 +98,6 @@ class AnalyzersController {
             return res.status(409).json({
                 error: {
                     message: `Code "${code}" already used`,
-                    localCode: 1,
                     meta: 'code',
                 },
             });
@@ -147,7 +144,6 @@ class AnalyzersController {
         //         res.status(404).json({
         //             error: {
         //                 message: `Analyzer with code "${code}" not found'`,
-        //                 localCode: 1,
         //                 meta: 'code',
         //             }
         //         });
@@ -205,7 +201,6 @@ class AnalyzersController {
                     error: {
                         message: error.message,
                         meta: 'data',
-                        localCode: 1,
                     },
                 });
 

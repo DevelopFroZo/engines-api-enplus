@@ -28,7 +28,6 @@ class LogsController {
             res.status(404).json({
                 error: {
                     message: `Analyzer log with id "${logId}" not found`,
-                    localCode: 1,
                     meta: 'id',
                 },
             });
