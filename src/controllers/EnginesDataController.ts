@@ -11,12 +11,17 @@ class EnginesDataController {
     async createOne(req: Request, res: Response) {
         const body = getData(req, [
             'value',
+            'type',
             'engine_id',
             'anchor',
         ]);
 
         if ('value' in body && typeof body.value !== 'number') {
             body.value = Number(body.value);
+        }
+
+        if (!('type' in body)) {
+            body.type = 'default';
         }
 
         if ('engine_id' in body && typeof body.engine_id !== 'number') {
