@@ -3,8 +3,12 @@ import type {Express} from 'express';
 import {shared} from './shared';
 import {decoratedController} from '@/utils/decoratedController';
 
+import {allowedMethods} from '@/middlewares/allowedMethods';
+import {authApiToken} from '@/middlewares/authApiToken';
+
 import {IndexController} from '@/controllers/IndexController';
 import {EnginesController} from '@/controllers/EnginesController';
+import {EnginesDataController} from '@/controllers/EnginesDataController';
 import {AlgorithmsController} from '@/controllers/AlgorithmsController';
 import {AnalyzersController} from '@/controllers/AnalyzersController';
 import {StatesController} from '@/controllers/StatesController';
@@ -12,6 +16,7 @@ import {LogsController} from '@/controllers/LogsController';
 
 const ENGINES_URI = '/engines';
 const ENGINES_ONE_URI = `${ENGINES_URI}/:engine_id`;
+const ENGINES_DATA_URI = `${ENGINES_URI}/data`;
 const ALGORITHMS_URI = '/algorithms';
 const ALGORITHMS_ONE_URI = `${ALGORITHMS_URI}/:algorithm_id`;
 const ANALYZERS_URI = '/analyzers';
@@ -24,12 +29,21 @@ const LOGS_ONE_URI = `${LOGS_URI}/:log_id`;
 function routes(app: Express) {
     const indexController = decoratedController(new IndexController);
     const enginesController = decoratedController(new EnginesController);
+    const enginesDataController = decoratedController(new EnginesDataController);
     const algorithmsController = decoratedController(new AlgorithmsController);
     const analyzersController = decoratedController(new AnalyzersController);
     const statesController = decoratedController(new StatesController);
     const logsController = decoratedController(new LogsController);
 
     shared(app);
+
+    // ==================== ENGINES DATA ====================
+    app.use(
+        ENGINES_DATA_URI,
+        allowedMethods('get', 'post'),
+        authApiToken,
+        enginesDataController.createOne
+    );
 
     // ==================== INDEX ====================
     app.get('/', indexController.index);
