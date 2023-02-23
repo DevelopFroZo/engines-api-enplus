@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 
 import {initialize as initializeDb} from '@/db/client';
 import {initialize as initializeMqttClient, client as mqttClient} from '@/services/mqtt/client';
+import {testMode as mqttTestMode} from '@/services/mqtt/testMode';
 import {routes} from '@/routes';
 
 function index(initialize?: Function) {
@@ -37,6 +38,12 @@ function index(initialize?: Function) {
     dotenv.config();
     initializeDb();
     initializeMqttClient();
+
+    mqttTestMode({
+        requestTopic: process.env.MQTT_TEST_MODE_REQUEST_TOPIC ?? 'ping',
+        responseTopic: process.env.MQTT_TEST_MODE_RESPONSE_TOPIC ?? 'pong',
+    });
+
     routes(app);
 
     server.listen(PORT, () => {
