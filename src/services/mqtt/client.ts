@@ -6,6 +6,18 @@ import mqttConfig from '@/configs/mqtt';
 
 let nativeClient: MqttClient;
 
+const client = new Proxy(new class {}, {
+    get(target: {}, p: string | symbol): any {
+        const property = Reflect.get(nativeClient, p);
+
+        if (typeof property === 'function') {
+            return property.bind(nativeClient);
+        }
+
+        return property;
+    },
+}) as MqttClient;
+
 function initialize() {
     const {
         protocol,
@@ -23,10 +35,6 @@ function initialize() {
         username,
         password,
     });
-}
-
-function client() {
-    return nativeClient;
 }
 
 export {
