@@ -22,8 +22,8 @@ function index(initialize?: Function) {
     //     await initPool();
     //     await initRedis();
     // } catch (error: any) {
-    //     console.error('\x1b[30m\x1b[41m!!! Failed to load configuration or init database pool !!!\x1b[0m');
-    //     console.error(`\x1b[31m${error.message}\x1b[0m`);
+    //     console.error('!!! Failed to load configuration or init database pool !!!');
+    //     console.error(error.message);
     //     console.error(error);
     //
     //     process.exit(-1);
@@ -38,8 +38,12 @@ function index(initialize?: Function) {
     routes(app);
 
     server.listen(PORT, () => {
-        console.log(`> \x1b[36mStarted \x1b[35m${NODE_ENV}\x1b[36m server on port \x1b[35m${PORT}\x1b[0m`);
-        initialize && initialize({app, server});
+        console.log(`Started ${NODE_ENV} server on port ${PORT}`);
+
+        initialize && initialize({
+            app,
+            server,
+        });
     });
 }
 

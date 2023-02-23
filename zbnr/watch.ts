@@ -21,11 +21,8 @@ async function restart() {
     }
 
     return new Promise<void>(res => {
-        require(mainFilePath).default(({app, server}: Services) => {
-            services = {
-                app,
-                server,
-            };
+        require(mainFilePath).default((newServices: Services) => {
+            services = newServices;
 
             res();
         });

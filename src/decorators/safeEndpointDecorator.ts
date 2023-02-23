@@ -8,20 +8,20 @@ function safeEndpointDecorator(handler: Handler) {
         } catch (error) {
             const {method, originalUrl, params, query, body} = req;
 
-            console.error(`\x1b[36m[\x1b[31mERROR\x1b[36m] \x1b[35m${method}\x1b[36m ${originalUrl}\x1b[0m`);
+            console.error(`[ERROR] ${method} ${originalUrl}`);
 
             if (Object.keys(params).length > 0) {
-                console.error(`  \x1b[36m[\x1b[35mPARAMS\x1b[36m]\x1b[0m:`);
+                console.error(`  [PARAMS]:`);
                 console.error(`  ${JSON.stringify(params, null, 2).replace(/\n/g, '\n  ')}`);
             }
 
             if (Object.keys(query).length > 0) {
-                console.error(`  \x1b[36m[\x1b[35mQUERY\x1b[36m]\x1b[0m:`);
+                console.error(`  [QUERY]:`);
                 console.error(`  ${JSON.stringify(query, null, 2).replace(/\n/g, '\n  ')}`);
             }
 
             if (Object.keys(body).length > 0) {
-                console.error(`  \x1b[36m[\x1b[35mBODY\x1b[36m]\x1b[0m:`);
+                console.error(`  [BODY]:`);
                 console.error(`  ${JSON.stringify(body, null, 2).replace(/\n/g, '\n  ')}`);
             }
 
