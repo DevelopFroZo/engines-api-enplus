@@ -16,6 +16,7 @@ function algorithms(app: Express) {
     app.get(ALGORITHMS_URI, algorithmsController.getList);
     app.get(ALGORITHMS_ONE_URI, algorithmsController.getById);
     app.put(ALGORITHMS_ONE_URI, algorithmsController.updateById);
+    app.delete(ALGORITHMS_ONE_URI, algorithmsController.deleteById);
 }
 
 export {algorithms};

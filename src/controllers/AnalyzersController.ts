@@ -197,7 +197,7 @@ class AnalyzersController {
             });
         } catch (error) {
             if (error instanceof ConverterError) {
-                res.json({
+                res.status(400).json({
                     error: {
                         message: error.message,
                         meta: 'data',
