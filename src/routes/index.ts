@@ -7,6 +7,7 @@ import {analyzers} from './analyzers';
 import {states} from './states';
 import {logs} from './logs';
 import {other} from './other';
+import {docs} from './docs';
 
 function routes(app: Express) {
     shared(app);
@@ -16,6 +17,7 @@ function routes(app: Express) {
     states(app);
     logs(app);
     other(app);
+    docs(app);
 }
 
 export {routes};

@@ -1,0 +1,690 @@
+openapi: 3.0.3
+info:
+    title: Engines API
+    version: 0.0.1
+servers:
+    -   url: http://localhost:3000
+        description: local
+    -   url: https://core.en-proj.ru
+        description: dev
+tags:
+    -   name: Engines
+    -   name: Algorithms
+    -   name: Analyzers
+components:
+    securitySchemes:
+        apiToken:
+            type: http
+            scheme: bearer
+paths:
+    /engines:
+        post:
+            tags:
+                - Engines
+            summary: Создание двигателя
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    example: New engine
+            responses:
+                200:
+                    description: Двигатель успешно создан
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    payload:
+                                        type: integer
+                                        example: 1
+        get:
+            tags:
+                - Engines
+            summary: Получение списка двигателей
+            parameters:
+                -   name: limit
+                    in: query
+                    schema:
+                        type: integer
+                        example: 5
+                -   name: offset
+                    in: query
+                    schema:
+                        type: integer
+                        example: 0
+            responses:
+                200:
+                    description: Список двигателей
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                            example: 1
+                                        name:
+                                            type: string
+                                            example: Engine
+                                        created_at:
+                                            type: integer
+                                            example: 1672502400
+                                        creator:
+                                            type: object
+                                            properties:
+                                                name:
+                                                    type: string
+                                                    example: Admin
+    /engines/{engine_id}:
+        parameters:
+            -   name: engine_id
+                in: path
+                description: ID двигателя
+                required: true
+                schema:
+                    type: integer
+                    example: 1
+        get:
+            tags:
+                - Engines
+            summary: Получение одного двигателя
+            responses:
+                200:
+                    description: Двигатель
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        example: 1
+                                    name:
+                                        type: string
+                                        example: Engine
+                                    created_at:
+                                        type: integer
+                                        example: 1672502400
+                                    updated_at:
+                                        type: integer
+                                        example: 1672502400
+                                    creator:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            name:
+                                                type: string
+                                                example: Admin
+                                            email:
+                                                type: string
+                                                example: example@example.com
+                                            role:
+                                                type: object
+                                                properties:
+                                                    name:
+                                                        type: string
+                                                        example: admin
+        put:
+            tags:
+                - Engines
+            summary: Обновление одного двигателя
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    example: Updated name of engine
+            responses:
+                204:
+                    description: Успешно обновлено
+        delete:
+            tags:
+                - Engines
+            summary: Удаление одного двигателя
+            responses:
+                204:
+                    description: Успешно удалено
+    /engines/data:
+        post:
+            tags:
+                - Engines
+            summary: Сохранение единицы данных о двигателе
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                value:
+                                    type: integer
+                                    example: 100
+                                type:
+                                    type: string
+                                    example: volume
+                                    default: default
+                                engine_id:
+                                    type: integer
+                                    example: 1
+                                anchor:
+                                    type: string
+                                    example: engine0
+            responses:
+                200:
+                    description: Успешно создано
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    payload:
+                                        type: integer
+                                        example: 1
+            security:
+                -   apiToken: [ ]
+    /algorithms:
+        post:
+            tags:
+                - Algorithms
+            summary: Создание алгоритма
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                algorithm:
+                                    type: string
+                                    example: gvg
+                                name:
+                                    type: string
+                                    example: GVG-20
+                                params:
+                                    type: object
+            responses:
+                200:
+                    description: Успешно создано
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    payload:
+                                        type: integer
+                                        example: 1
+        get:
+            tags:
+                - Algorithms
+            summary: Получить список алгоритмов
+            parameters:
+                -   name: limit
+                    in: query
+                    schema:
+                        type: integer
+                        example: 5
+                -   name: offset
+                    in: query
+                    schema:
+                        type: integer
+                        example: 0
+            responses:
+                200:
+                    description: Список алгоритмов
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        example: 1
+                                    algorithm:
+                                        type: string
+                                        example: gvg
+                                    name:
+                                        type: string
+                                        example: GVG-20
+                                    created_at:
+                                        type: integer
+                                        example: 1672502400
+                                    creator:
+                                        type: object
+                                        properties:
+                                            name:
+                                                type: string
+                                                example: Admin
+    /algorithms/configs:
+        get:
+            tags:
+                - Algorithms
+            summary: Получить список конфигураций алгоритмов
+            responses:
+                200:
+                    description: Список конфигураций алгоритмов
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        name:
+                                            type: string
+                                            example: gvg
+                                        label:
+                                            type: string
+                                            example: Grid Visual Graph
+                                        parameters:
+                                            type: array
+                                            items:
+                                                type: object
+                                                properties:
+                                                    name:
+                                                        type: string
+                                                        example: windowsCount
+                                                    description:
+                                                        type: string
+                                                        example: Количество окон
+    /algorithms/{algorithm_id}:
+        parameters:
+            -   name: algorithm_id
+                in: path
+                description: ID алгоритма
+                required: true
+                schema:
+                    type: integer
+                    example: 1
+        get:
+            tags:
+                - Algorithms
+            summary: Получить двигатель по ID
+            responses:
+                200:
+                    description: Двигатель
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: number
+                                        example: 1
+                                    algorithm:
+                                        type: string
+                                        example: gvg
+                                    name:
+                                        type: string
+                                        example: GVG-20
+                                    params:
+                                        type: object
+                                        example:
+                                            -   windowsCount: 20
+                                    created_at:
+                                        type: number
+                                        example: 1672502400
+                                    updated_at:
+                                        type: number
+                                        example: 1672502400
+                                    creator:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            name:
+                                                type: string
+                                                example: Admin
+                                            email:
+                                                type: string
+                                                example: example@example.com
+                                            role:
+                                                type: object
+                                                properties:
+                                                    name:
+                                                        type: string
+                                                        example: admin
+        put:
+            tags:
+                - Algorithms
+            summary: Обновить алгоритм по ID
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                algorithm:
+                                    type: string
+                                    example: gvg
+                                name:
+                                    type: string
+                                    example: GVG-20
+                                params:
+                                    type: object
+            responses:
+                204:
+                    description: Успешно обновлено
+        delete:
+            tags:
+                - Algorithms
+            summary: Удалить алгоритм по ID
+            responses:
+                204:
+                    description: Успешно удалено
+    /analyzers:
+        post:
+            tags:
+                - Analyzers
+            summary: Создать анализатор
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                engine_id:
+                                    type: integer
+                                    example: 1
+                                algorithm_id:
+                                    type: integer
+                                    example: 1
+                                name:
+                                    type: string
+                                    example: GVG-20 Analyzer
+                                threshold:
+                                    type: integer
+                                    example: 100
+                                code:
+                                    type: string
+                                    example: gvg-20-analyzer
+            responses:
+                200:
+                    description: Успешно создано
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    payload:
+                                        type: integer
+                                        example: 1
+        get:
+            tags:
+                - Analyzers
+            summary: Получить список анализаторов
+            parameters:
+                -   name: limit
+                    in: query
+                    schema:
+                        type: integer
+                        example: 5
+                -   name: offset
+                    in: query
+                    schema:
+                        type: integer
+                        example: 0
+            responses:
+                200:
+                    description: Список анализаторов
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        example: 1
+                                    name:
+                                        type: string
+                                        example: GVG-20 Analyzer
+                                    is_using:
+                                        type: boolean
+                                        example: true
+                                    engine:
+                                        type: object
+                                        properties:
+                                            name:
+                                                type: string
+                                                example: Engine
+                                    algorithm:
+                                        type: object
+                                        properties:
+                                            algorithm:
+                                                type: string
+                                                example: gvg
+                                            name:
+                                                type: string
+                                                example: GVG-20
+                                    lastAnalyze:
+                                        type: object
+                                        properties:
+                                            name:
+                                                type: string
+                                                example: Хороший
+                                            created_at:
+                                                type: integer
+                                                example: 1672502400
+    /analyzers/{analyzer_id}:
+        parameters:
+            -   name: analyzer_id
+                in: path
+                required: true
+                schema:
+                    type: integer
+                    example: 1
+        get:
+            tags:
+                - Analyzers
+            summary: Получить анализатор по ID
+            responses:
+                200:
+                    description: Анализатор
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id:
+                                        type: integer
+                                        example: 1
+                                    name:
+                                        type: string
+                                        example: GVG-20 Analyzer
+                                    threshold:
+                                        type: integer
+                                        example: 100
+                                    code:
+                                        type: string
+                                        example: gvg-20-analyzer
+                                    is_using:
+                                        type: boolean
+                                        example: true
+                                    created_at:
+                                        type: integer
+                                        example: 1672502400
+                                    updated_at:
+                                        type: integer
+                                        example: 1672502400
+                                    engine:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            name:
+                                                type: string
+                                                example: Engine
+                                    algorithm:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            algorithm:
+                                                type: string
+                                                example: gvg
+                                            name:
+                                                type: string
+                                                example: GVG-20
+                                    creator:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            name:
+                                                type: string
+                                                example: Admin
+                                            role:
+                                                type: object
+                                                properties:
+                                                    name:
+                                                        type: string
+                                                        example: admin
+                                    states:
+                                        type: array
+                                        items:
+                                            type: object
+                                            properties:
+                                                id:
+                                                    type: integer
+                                                    example: 1
+                                                name:
+                                                    type: string
+                                                    example: Хороший
+                                                value:
+                                                    type: integer
+                                                    example: 300
+                                    lastAnalyze:
+                                        type: object
+                                        properties:
+                                            name:
+                                                type: string
+                                                example: Хороший
+                                            value:
+                                                type: integer
+                                                example: 295
+                                            analyzer_state_value:
+                                                type: integer
+                                                example: 300
+                                            created_at:
+                                                type: integer
+                                                example: 1672502400
+        put:
+            tags:
+                - Analyzers
+            summary: Обновить анализатор по ID
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                engine_id:
+                                    type: integer
+                                    example: 1
+                                algorithm_id:
+                                    type: integer
+                                    example: 1
+                                name:
+                                    type: string
+                                    example: '[UPDATED] GVG-20 Analyzer'
+                                threshold:
+                                    type: integer
+                                    example: 100
+                                code:
+                                    type: string
+                                    example: gvg-20-analyzer
+                                is_using:
+                                    type: boolean
+                                    example: true
+            responses:
+                204:
+                    description: Успешно обновлено
+        delete:
+            tags:
+                - Analyzers
+            summary: Удалить анализатор по ID
+            responses:
+                204:
+                    description: Успешно удалено
+    /analyzers/{analyzer_id}/activate:
+        parameters:
+            -   name: analyzer_id
+                in: path
+                required: true
+                schema:
+                    type: integer
+                    example: 1
+        put:
+            tags:
+                - Analyzers
+            summary: Изменить статус активности анализатора по ID
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                is_using:
+                                    type: boolean
+                                    example: true
+            responses:
+                204:
+                    description: Успешно изменено
+    /analyzers/batch:
+        post:
+            tags:
+                - Analyzers
+            summary: Произвести анализ пачки данных
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                code:
+                                    type: string
+                                    example: gvg-20-analyzer
+                                data:
+                                    type: string
+                                type:
+                                    type: string
+                                    enum:
+                                        - separated
+                                        - json
+                                        - rawJson
+                                    example: json
+                                options:
+                                    type: object
+                                    properties:
+                                        separator:
+                                            type: string
+                                            example: ' '
+                                            default: ' '
+                                        dataKey:
+                                            type: string
+                                            example: 'data'
+                                            default: 'data'
+                                        valueKey:
+                                            type: string
+                                            example: 'value'
+                                            default: 'value'
+                                        isValueString:
+                                            type: boolean
+                                            example: false
+                                            default: false
+            responses:
+                200:
+                    description: Успешно выполнено
