@@ -40,6 +40,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
             id: number,
             name: string,
             is_using: boolean,
+            engine_id: number,
             engine_name: string,
             algorithm_algorithm: string,
             algorithm_name: string,
@@ -48,7 +49,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
         }>(
             `select an.id::integer, an.name,
                     an.is_using,
-                    e.name                  as engine_name,
+                    e.id::integer as engine_id, e.name as engine_name,
                     al.algorithm            as algorithm_algorithm,
                     al.name                 as algorithm_name,
                     alo.analyzer_state_name as last_analyze_name,
@@ -69,6 +70,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
         // TODO smart group
         const analyzers = rawAnalyzers.map(
             ({
+                 engine_id,
                  engine_name,
                  algorithm_algorithm, algorithm_name,
                  last_analyze_name, last_analyze_created_at,
@@ -76,6 +78,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
              }) => ({
                 ...rest,
                 engine: {
+                    id: engine_id,
                     name: engine_name,
                 },
                 algorithm: {
@@ -116,7 +119,8 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
             last_analyze_analyzer_state_value: number,
             last_analyze_created_at: number,
         }>(
-            `select an.id::integer, an.name, an.type,
+            `select an.id::integer, an.name,
+                    an.type,
                     an.threshold,
                     an.code,
                     an.is_using,
@@ -217,7 +221,8 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
             algorithm_name: string,
             algorithm_params: Record<string, any>,
         }>(
-            `select an.id::integer, an.name, an.type,
+            `select an.id::integer, an.name,
+                    an.type,
                     an.threshold,
                     e.name    as engine_name,
                     al.algorithm,
