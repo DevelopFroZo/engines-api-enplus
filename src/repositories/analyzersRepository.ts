@@ -22,13 +22,13 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
         return rowCount === 1;
     }
 
-    async create(creatorId: number, engineId: number, algorithmId: number, name: string, threshold: number, code: string): Promise<number> {
+    async create(creatorId: number, engineId: number, algorithmId: number, type: string, name: string, threshold: number, code: string): Promise<number> {
         const {rows: [{id}]} = await this.client.query<{
             id: number,
         }>(
-            `insert into analyzers(engine_id, algorithm_id, creator_id, name, threshold, code, is_using)
-             values ($1, $2, $3, $4, $5, $6, false) returning id::integer`,
-            [engineId, algorithmId, creatorId, name, threshold, code]
+            `insert into analyzers(engine_id, algorithm_id, creator_id, type, name, threshold, code, is_using)
+             values ($1, $2, $3, $4, $5, $6, $7, false) returning id::integer`,
+            [engineId, algorithmId, creatorId, type, name, threshold, code]
         );
 
         return id;
@@ -96,6 +96,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
     async getById(id: number): Promise<Record<string, any> | null> {
         const {rows: [rawAnalyzer]} = await this.client.query<{
             id: number,
+            type: string,
             name: string,
             threshold: number,
             code: string,
@@ -115,7 +116,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
             last_analyze_analyzer_state_value: number,
             last_analyze_created_at: number,
         }>(
-            `select an.id::integer, an.name,
+            `select an.id::integer, an.name, an.type,
                     an.threshold,
                     an.code,
                     an.is_using,
@@ -208,6 +209,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
     async getForAnalyze(code: string): Promise<Record<string, any> | null> {
         const {rows: [rawAnalyzer]} = await this.client.query<{
             id: number,
+            type: string,
             name: string,
             threshold: number,
             engine_name: string,
@@ -215,7 +217,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
             algorithm_name: string,
             algorithm_params: Record<string, any>,
         }>(
-            `select an.id::integer, an.name,
+            `select an.id::integer, an.name, an.type,
                     an.threshold,
                     e.name    as engine_name,
                     al.algorithm,
@@ -284,6 +286,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
         id: number,
         engineId: number,
         algorithmId: number,
+        type: string,
         name: string,
         threshold: number,
         code: string,
@@ -293,13 +296,14 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
             `update analyzers
              set engine_id    = $1,
                  algorithm_id = $2,
-                 name         = $3,
-                 threshold    = $4,
-                 code         = $5,
-                 is_using     = $6,
+                 type         = $3,
+                 name         = $4,
+                 threshold    = $5,
+                 code         = $6,
+                 is_using     = $7,
                  updated_at   = extract(epoch from now())
-             where id = $7`,
-            [engineId, algorithmId, name, threshold, code, isUsing, id]
+             where id = $8`,
+            [engineId, algorithmId, type, name, threshold, code, isUsing, id]
         );
     }
 

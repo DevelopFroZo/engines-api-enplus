@@ -14,6 +14,7 @@ class AnalyzersController {
         const {
             engine_id: rawEngineId,
             algorithm_id: rawAlgorithmId,
+            type,
             name,
             threshold: rawThreshold,
             code,
@@ -35,7 +36,7 @@ class AnalyzersController {
             });
         }
 
-        const id = await analyzersRepository.create(creatorId, engineId, algorithmId, name, threshold, code);
+        const id = await analyzersRepository.create(creatorId, engineId, algorithmId, type, name, threshold, code);
 
         res.json({
             payload: id,
@@ -82,6 +83,7 @@ class AnalyzersController {
         const {
             engine_id: rawEngineId,
             algorithm_id: rawAlgorithmId,
+            type,
             name,
             threshold: rawThreshold,
             code,
@@ -103,7 +105,7 @@ class AnalyzersController {
             });
         }
 
-        await analyzersRepository.update(analyzerId, engineId, algorithmId, name, threshold, code, is_using);
+        await analyzersRepository.update(analyzerId, engineId, algorithmId, type, name, threshold, code, is_using);
 
         res.sendStatus(204);
     }
