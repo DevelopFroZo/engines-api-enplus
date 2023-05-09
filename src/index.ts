@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 // import pgStoreConnect from 'connect-pg-simple';
 
 import {initialize as initializeDb} from '@/db/client';
+import {initialize as initializeSocket, server as socketIoServer} from '@/services/socket';
 import {initialize as initializeMqttClient, client as mqttClient} from '@/services/mqtt/client';
 import {dataAnalyzer as mqttDataAnalyzer} from '@/services/mqtt/dataAnalyzer';
 import {testMode as mqttTestMode} from '@/services/mqtt/testMode';
@@ -38,6 +39,7 @@ function index(initialize?: Function) {
 
     dotenv.config();
     initializeDb();
+    initializeSocket(server);
     initializeMqttClient();
     mqttDataAnalyzer('analyzers/+/data');
 
@@ -51,7 +53,7 @@ function index(initialize?: Function) {
     server.listen(PORT, () => {
         console.log(`Started ${NODE_ENV} server on port ${PORT}`);
 
-        initialize && initialize({app, server, mqttClient});
+        initialize && initialize({app, server, socketIoServer, mqttClient});
     });
 }
 
