@@ -4,7 +4,8 @@ import {Server as SocketIOServer} from 'socket.io';
 
 let io: SocketIOServer;
 
-const server = new Proxy(new class {}, {
+const server = new Proxy(new class {
+}, {
     get(target: {}, p: string | symbol): any {
         const property = Reflect.get(io, p);
 
