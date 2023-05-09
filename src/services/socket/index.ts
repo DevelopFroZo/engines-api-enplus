@@ -17,7 +17,11 @@ const server = new Proxy(new class {}, {
 }) as SocketIOServer;
 
 function initialize(server: Server): void {
-    io = new SocketIOServer(server);
+    io = new SocketIOServer(server, {
+        cors: {
+            origin: '*',
+        },
+    });
 
     console.log('[SOCKET] Initialized');
 }
