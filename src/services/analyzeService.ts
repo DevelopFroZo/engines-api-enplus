@@ -25,7 +25,7 @@ export const analyzeService = new class AnalyzeService {
 
         // TODO
         // @ts-ignore
-        const {analyzer_state_name, analyzer_state_value, maxValue} = analyzer.states.reduce<{
+        const {analyzer_state_name, analyzer_state_value, minValue, maxValue} = analyzer.states.reduce<{
             analyzer_state_name: string,
             analyzer_state_value: number,
             minDistance: number,
@@ -40,6 +40,10 @@ export const analyzeService = new class AnalyzeService {
                 res.minDistance = currentDistance;
             }
 
+            if (!res.minValue || value < res.minValue) {
+                res.minValue = value;
+            }
+
             if (!res.maxValue || value > res.maxValue) {
                 res.maxValue = value;
             }
@@ -47,7 +51,7 @@ export const analyzeService = new class AnalyzeService {
             return res;
         }, {});
 
-        const coefficient = Math.round(Math.min(result / maxValue, 1) * 100) / 100;
+        const coefficient = Math.max(1 - (result - minValue) / (maxValue - minValue), 0);
 
         const rawLog = {
             analyzer: {
