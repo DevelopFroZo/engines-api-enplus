@@ -225,8 +225,7 @@ const analyzersRepository = new class AnalyzersRepository extends Repository {
             `select an.id::integer, an.name,
                     an.type,
                     an.threshold,
-                    e.id      as engine_id,
-                    e.name    as engine_name,
+                    e.id::integer as engine_id, e.name as engine_name,
                     al.algorithm,
                     al.name   as algorithm_name,
                     al.params as algorithm_params
