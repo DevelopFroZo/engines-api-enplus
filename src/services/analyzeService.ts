@@ -4,6 +4,7 @@ import type {Algorithm} from '@/utils//algorithms/Algorithm';
 import {algorithms} from '@/utils/algorithms';
 import {analyzersRepository} from '@/repositories/analyzersRepository';
 import {analyzersLogsRepository} from '@/repositories/analyzersLogsRepository';
+import {server as socketIoServer} from '@/services/socket';
 
 export const analyzeService = new class AnalyzeService {
     async analyze(data: Point[], code: string): Promise<Record<string, any> | null> {
@@ -56,6 +57,7 @@ export const analyzeService = new class AnalyzeService {
                 code: code,
             },
             engine: {
+                id: analyzer.engine_id,
                 name: analyzer.engine_name,
             },
             algorithm: {
@@ -84,6 +86,8 @@ export const analyzeService = new class AnalyzeService {
         //     analyzer_state_name,
         //     analyzer_state_value,
         // };
+
+        socketIoServer.emit('analyze:end', rawLog);
 
         return rawLog;
         // return analyzersLogsRepository.create(rawLog);
